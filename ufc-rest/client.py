@@ -2,7 +2,7 @@ import requests
 from models.event import Event
 
 '''
-This class is a wrapper for the UFC API, providing methods to retrieve event data, search for events, etc.
+This class is a wrapper for the UFC API, providing methods to retrieve event data, search for events, etc. Supports SOCKS proxies, custom headers, and request timeouts.
 '''
 class APIClient:
     def __init__(self, proxies: dict = None, headers: dict = None, timeout: int = 10, retries: int = 3):
