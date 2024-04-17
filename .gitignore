@@ -1,2 +1,4 @@
 docs
+dist
 .venv
+ufc_rest.egg-info

@@ -224,6 +224,9 @@ class Fighter:
     submission_of_the_night: bool
     performance_of_the_night: bool
 
+    def __repr__(self):
+        return f'<Fighter {self.name.first} {self.name.last}, {self.fighter_id}>'
+
     @classmethod
     def from_json(cls, data):
         name = Name.from_json(data['Name'])
