@@ -262,17 +262,18 @@ class Tracking:
     type_: str
     round_number: int
     round_time: str
-    timestamp: str
+    timestamp: datetime
 
     @classmethod
     def from_json(cls, data):
+        timestamp = datetime.strptime(data['Timestamp'], "%Y-%m-%dT%H:%M:%SZ")
         return cls(
             action_id=data['ActionId'],
             fighter_id=data['FighterId'],
             type_=data['Type'],
             round_number=data['RoundNumber'],
             round_time=data['RoundTime'],
-            timestamp=data['Timestamp']
+            timestamp=timestamp
         )
 
 @dataclass
@@ -281,7 +282,7 @@ class Fight:
     fight_order: int
     status: str
     card_segment: str
-    card_segment_start_time: str
+    card_segment_start_time: datetime
     card_segment_broadcaster: str
     fighters: List[Fighter]
     result: Result
@@ -291,6 +292,10 @@ class Fight:
     rule_set: RuleSet
     fight_night_tracking: List[Tracking]
 
+    def __repr__(self):
+        fighters_str = " vs. ".join([f"{fighter.name.first} {fighter.name.last}" for fighter in self.fighters])
+        return f'<Fight "{fighters_str}", {self.card_segment_start_time}, {self.fight_id}>'
+
     @classmethod
     def from_json(cls, data):
         fighters = [Fighter.from_json(fighter) for fighter in data['Fighters']]
@@ -299,12 +304,13 @@ class Fight:
         referee = Referee.from_json(data['Referee'])
         rule_set = RuleSet.from_json(data['RuleSet'])
         fight_night_tracking = [Tracking.from_json(tracking) for tracking in data['FightNightTracking']]
+        start_time = datetime.strptime(data['CardSegmentStartTime'], "%Y-%m-%dT%H:%MZ")
         return cls(
             fight_id=data['FightId'],
             fight_order=data['FightOrder'],
             status=data['Status'],
             card_segment=data['CardSegment'],
-            card_segment_start_time=data['CardSegmentStartTime'],
+            card_segment_start_time=start_time,
             card_segment_broadcaster=data['CardSegmentBroadcaster'],
             fighters=fighters,
             result=result,
@@ -329,6 +335,14 @@ class Event:
     organization: Organization
     location: Location
     fight_card: List[Fight]
+
+    def __repr__(self):
+        date_str = self.start_time.strftime("%Y-%m-%d %H:%M:%S")
+        return f'<Event "{self.name}", {date_str}, {self.id}>'
+
+    def get_main_event(self):
+        return self.fight_card[0]
+        
     @classmethod
     def from_json(cls, data):
         data = data['LiveEventDetail']
