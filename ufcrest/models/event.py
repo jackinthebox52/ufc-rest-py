@@ -1,9 +1,6 @@
-import requests
 from dataclasses import dataclass
 from typing import ClassVar, List
 from datetime import datetime, date, time
-
-import sys
 
 @dataclass
 class Organization:
@@ -117,7 +114,6 @@ class Result:
         fight_scores = [FightScore.from_json(score) for score in data['FightScores']]
         #example ending time: "5:00"
         ending_time = datetime.strptime(data['EndingTime'], "%M:%S").time()
-        print(ending_time)
         return cls(
             method=data['Method'],
             ending_round=data['EndingRound'],
@@ -354,13 +350,3 @@ class Event:
             location=location,
             fight_card=fight_card
         )
-
-
-def main():
-    from pympler import asizeof
-    url = "https://d29dxerjsp82wz.cloudfront.net/api/v3/event/live/1080.json"
-    data = response = requests.get(url).json()
-    event_obj = Event.from_json(data)
-
-if __name__ == "__main__":
-    main()
