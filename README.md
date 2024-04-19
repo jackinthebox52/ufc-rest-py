@@ -8,8 +8,8 @@
 <div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
+[![GitHub Issues](https://img.shields.io/github/issues/jackinthebox52/ufc-rest-py)](https://github.com/jackinthebox52/ufc-rest-py/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/jackinthebox52/ufc-rest-py)](https://github.com/jackinthebox52/ufc-rest-py/pulls)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 </div>
@@ -23,58 +23,69 @@
 ## 📝 Table of Contents
 
 - [About](#about)
-- [Getting Started](#getting_started)
-- [Deployment](#deployment)
 - [Usage](#usage)
+- [Prerequisites](#prerequisites)
+- [Installing](#installing)
 - [Built Using](#built_using)
-- [TODO](../TODO.md)
-- [Contributing](../CONTRIBUTING.md)
 - [Authors](#authors)
 - [Acknowledgments](#acknowledgement)
 
 ## 🧐 About <a name = "about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
-
-## 🏁 Getting Started <a name = "getting_started"></a>
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+This api client currently supports the singular endpoint that I am aware of (/events/live/{id}.json), which returns JSON data with all the event-specific data available (Date, Location, Title,  Bouts/Fighters, Per-Bout Timestamps etc.) The data is deserialized and returned as a custom Python object. No 3rd-party libraries are used for deserialization. This project is a bit overkill, enjoy.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them.
-
-```
-Give examples
-```
+Python version 3.6+
+Python requests library and requests[socks]
 
 ### Installing
 
 A step by step series of examples that tell you how to get a development env running.
 
-Say what the step will be
+(Optional) Create a virtual environment.
 
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
+```bash
+python3 -m venv venv
+source venv/bin/activate
 ```
 
+Install from PyPi
+
+```bash
+pip install ufc-rest
+```
+
+OR, clone the repository and install from source
+
+```bash
+git clone https://github.com/jackinthebox52/ufc-rest-py
+cd ufc-rest-py
+pip install .
+```
 
 ## 🎈 Usage <a name="usage"></a>
 
-Add notes about how to use the system.
+An basic example of how to use the client.
+
+```python
+from ufc_rest import APIClient
+
+client = APIClient()    # Initialize a client
+
+event = client.get_event(1081) # Get the live event data for event id 1081 (Oliveira vs. Gaethje)
+
+print(event.title) # Print the event title
+
+for f in event.fights: # Print the fighters in each bout
+    print(f)
+    print(f'The #{f.FightOrder} (reverse order), is between {f.fighters[0].name.first} and {f.fighters[0].name.first}')
+```
+
+TODO: Add advanced usage examples
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
 - [Python](https://www.python.com/)
-- [Requests](https://github.com/psf/requests)
-
-## ✍️ Authors <a name = "authors"></a>
-
-- [@jackinthebox52](https://github.com/jackinthebox52)
+- [Requests](https://github.com/psf/requests) (With socks support)
 
