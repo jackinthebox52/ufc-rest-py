@@ -337,21 +337,21 @@ class Event:
     live_round_elapsed_time: str
     organization: Organization
     location: Location
-    fight_card: List[Fight]
+    fights: List[Fight]
 
     def __repr__(self):
         date_str = self.start_time.strftime("%Y-%m-%d %H:%M:%S")
         return f'<Event "{self.name}", {date_str}, {self.id}>'
 
     def get_main_event(self):
-        return self.fight_card[0]
+        return self.fights[0]
         
     @classmethod
     def from_json(cls, data):
         data = data['LiveEventDetail']
         organization = Organization.from_json(data['Organization'])
         location = Location.from_json(data['Location'])
-        fight_card = [Fight.from_json(card) for card in data['FightCard']]
+        fights = [Fight.from_json(card) for card in data['FightCard']]
         start_time = datetime.strptime(data['StartTime'], "%Y-%m-%dT%H:%MZ")
         return cls(
             id=data['EventId'],
@@ -365,5 +365,5 @@ class Event:
             live_round_elapsed_time=data['LiveRoundElapsedTime'],
             organization=organization,
             location=location,
-            fight_card=fight_card
+            fights=fights
         )

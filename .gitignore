@@ -1,4 +1,6 @@
 docs
+build
 dist
 .venv
+__pycache__
 ufc_rest.egg-info
