@@ -15,14 +15,6 @@
     <br> 
 </p>
 
-## 📝 Table of Contents
-
-- [About](#about)
-- [Prerequisites](#prerequisites)
-- [Installing](#installing)
-- [Usage](#usage)
-- [Built Using](#built_using)
-
 ## 🧐 About <a name = "about"></a>
 
 This api client currently supports the singular endpoint that I am aware of (api/v3/events/live/eventid.json), which returns JSON containing event-specific data (Date, Location, Title,  Bouts/Fighters, Per-Bout Timestamps etc.) The data is deserialized and returned as a custom Python object. No 3rd-party libraries are used for deserialization. This project is a bit overkill, enjoy.
